@@ -1,0 +1,1 @@
+export const appServer = "localhost:30001";

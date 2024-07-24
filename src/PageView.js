@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
-function PageView({ match }) {
+import { appServer } from "./config";
+
+function PageView() {
+    const { title } = useParams();
+
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        axios.get(`/view/${match.params.title}`)
+        axios.get(`${appServer}/view/${title}`)
             .then(response => setContent(response.data))
             .catch(error => console.error(error));
-    }, [match.params.title]);
+    }, [title]);
 
     return (
         <div>
-            <h1>{match.params.title}</h1>
+            <h1>{title}</h1>
             <div>{content}</div>
         </div>
     );
