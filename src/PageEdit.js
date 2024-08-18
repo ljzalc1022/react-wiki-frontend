@@ -27,7 +27,7 @@ function PageEdit({ history }) {
     }, [title]);
 
     const handleSave = () => {
-        axios.post(`${appServer}/save/${title}`, {body: content})
+        axios.post(`${appServer}/save`, {title: title, body: content})
             .then(() => history.push(`/view/${title}`))
             .catch(error => console.error(error));
     };
