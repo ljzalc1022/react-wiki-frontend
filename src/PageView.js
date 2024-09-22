@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import axios from "axios";
 
 import { appServer } from "./config";
@@ -8,6 +8,7 @@ function PageView() {
     const { title } = useParams();
 
     const [content, setContent] = useState('');
+    const [isNewPage, setIsNewPage] = useState(false);
 
     useEffect(() => {
         console.log(`${appServer}/view/${title}`)
@@ -16,8 +17,8 @@ function PageView() {
             .then(response => setContent(response.data.body))
             .catch(error => {
                 if (error.response) {
-                    if (error.response.status == 404) {
-                        // TODO redirect to /edit/${title}
+                    if (error.response.status === 404) {
+                        setIsNewPage(true);
                     }
                     else {
                         console.error('status code: ', error.response.status);
@@ -29,6 +30,10 @@ function PageView() {
                 }
             });
     }, [title]);
+
+    if (isNewPage) {
+        return <Navigate to={`/edit/${title}`}/>;
+    }
 
     return (
         <div>
